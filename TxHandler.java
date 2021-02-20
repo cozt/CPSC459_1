@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class TxHandler {
 
 	/* Creates a public ledger whose current UTXOPool (collection of unspent 
@@ -34,6 +38,21 @@ public class TxHandler {
 			if()
 			
 		}
+		
+		// Condition 4: All tx's outputs values must be non-negative.
+		// Create new array lists of inputs and outputs.
+		ArrayList<Transaction.Input> testInputs = tx.getInputs();
+		ArrayList<Transaction.Output> testOutputs = tx.getOutputs();
+		
+		// If either inputs or outputs are empty, then abort and return false.
+		if (testInputs.isEmpty()==true || testOutputs.isEmpty() == true)
+		{
+			return false;
+		}
+		
+		// Look through the outputs and check to see if each output is non-negative.
+		
+		// Condition 5: The sum of tx's input values must not be less than the sum of tx's output values.
 		
 		// IMPLEMENT THIS
 		return true;
