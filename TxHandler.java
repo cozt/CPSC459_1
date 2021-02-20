@@ -21,9 +21,22 @@ public class TxHandler {
 	 */
 
 	public boolean isValidTx(Transaction tx) {
+		int tx_size = tx.numInputs();
+		for(int i = 0 ; i < tx_size;i ++){ // we are going through the entire input of tx 
+			Transaction.Input holds_input = tx.getInput(i); // get all the tx info
+			if(holds_input == null ) return false; // if it doesnt have a value it automatically becomes false 
+			UTXO temp = new UTXO(holds_input.prevTxHash,holds_input.outputIndex); // after that makes a temporary UTXO s
+			Transaction.Output holds_output = utxoPool.getTxOutput(temp); // with the temporary UTXO makes a temporoy that holds the output 
+			//1 
+			if(utxoPool.contains(temp)==false){ // we check with the temp and see if it insde the pool of utxo thats located in system 
+				return false;
+			}
+			if()
+			
+		}
 		
 		// IMPLEMENT THIS
-		return false;
+		return true;
 	}
 
 	/* Handles each epoch by receiving an unordered array of proposed 
