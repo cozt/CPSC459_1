@@ -39,10 +39,17 @@ public class TxHandler {
 			
 		}
 		
+		boolean test4 = true;
+		boolean test5 = true;
+		
 		// Condition 4: All tx's outputs values must be non-negative.
 		// Create new array lists of inputs and outputs.
 		ArrayList<Transaction.Input> testInputs = tx.getInputs();
 		ArrayList<Transaction.Output> testOutputs = tx.getOutputs();
+		
+		// Create two variables that acts as the sum of inputs and outputs.
+		int totalInput = 0;
+		int totalOutput = 0;
 		
 		// If either inputs or outputs are empty, then abort and return false.
 		if (testInputs.isEmpty()==true || testOutputs.isEmpty() == true)
@@ -51,8 +58,37 @@ public class TxHandler {
 		}
 		
 		// Look through the outputs and check to see if each output is non-negative.
+		// If output is not negative, add the output to the sum.
+		for (int i = 0; i < testOutputs.size(); i++)
+		{
+			Transaction.Output eachOut = testOutputs.get(i);
+			if (eachOut.value <= 0)
+			{
+				// If the output is negative, break out of the for loop.
+				test4 = false;
+				break;
+			}
+			totalOutput += eachOut.value;
+		}
+		
+		// Now do the same for inputs, except obtain each input by obtaining the value from
+		// each previous hash.
+		for (int j = 0; j < testInputs.size(); j++)
+		{
+			Transaction.Input eachIn = testInputs.get(j);
+		}
 		
 		// Condition 5: The sum of tx's input values must not be less than the sum of tx's output values.
+		if (totalInput < totalOutput)
+		{
+			test5 = false;
+		}
+		
+		// Return true only if all two tests return true.
+		if (test4 == false || test5 == false)
+		{
+			return false;
+		}
 		
 		// IMPLEMENT THIS
 		return true;
