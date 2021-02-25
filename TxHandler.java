@@ -143,7 +143,10 @@ public class TxHandler {
 			count =+ 1;
 		}
 			 
-	   }	 
+	   }
+	else{
+	       continue;
+	    }
      }       
 		 Transaction[] TranscValid = new Transaction[Trans.size()];  
 		
