@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -115,7 +116,7 @@ public class TxHandler {
 	public Transaction[] handleTxs(Transaction[] possibleTxs) {
 		
 		
-		 ArrayList<Transaction> Trans = new ArrayList<Transaction>();
+		 LinkedList<Transaction> Trans = new LinkedList<Transaction>();
                 int count = 0;
 	for (Transaction Transc : possibleTxs)
 			 
@@ -142,8 +143,9 @@ public class TxHandler {
 		}
 			 
 			 
-	}
-		Transaction[] TranscValid = new Transaction[Trans.size()];
+	}       
+		 Transaction[] TranscValid = new Transaction[Trans.size()];
+		
          
 		return TranscValid;
 		
