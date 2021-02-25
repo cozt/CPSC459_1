@@ -25,17 +25,30 @@ public class TxHandler {
 	 */
 
 	public boolean isValidTx(Transaction tx) {
+		double total_input = 0;
+
+		ArrayList<UTXO> temp_unique_utox = new ArrayList<>();
 		int tx_size = tx.numInputs();
+
 		for(int i = 0 ; i < tx_size;i ++){ // we are going through the entire input of tx 
 			Transaction.Input holds_input = tx.getInput(i); // get all the tx info
 			if(holds_input == null ) return false; // if it doesnt have a value it automatically becomes false 
 			UTXO temp = new UTXO(holds_input.prevTxHash,holds_input.outputIndex); // after that makes a temporary UTXO s
 			Transaction.Output holds_output = utxoPool.getTxOutput(temp); // with the temporary UTXO makes a temporoy that holds the output 
 			//1 
-			if(utxoPool.contains(temp)==false){ // we check with the temp and see if it insde the pool of utxo thats located in system 
+			if(utxoPool.contains(temp)==false) // we check with the temp and see if it insde the pool of utxo thats located in system 
 				return false;
-			}
-			if()
+				RSAKey answer = holds_output.address;
+			
+			
+			if(answer.verifySignature(tx.getRawDataToSign(i), holds_input.signature)== false) return false;
+			//2 
+			
+			//3
+			if(temp_unique_utox.contains(temp)) return false;
+			temp_unique_utox.add(temp);
+			total_input+= holds_output.value;
+
 			
 		}
 		
