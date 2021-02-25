@@ -120,9 +120,10 @@ public class TxHandler {
                 int count = 0;
 	for (Transaction Transc : possibleTxs)
 			 
-	 {
-			isValidTx(Transc);               //goes to isValid to see if each transaction for correctness
-		    Trans.add(Transc);               // add to the arraylist
+     {
+	if(isValidTx(Transc))              //goes in if statmenet , if transaction is correct
+	   {
+		    Trans.add(Transc);               // add to the linkedlist
 		    
 		 for(Transaction.Input Input : Transc.getInputs())           //  the loop is to remove the UTXO from the pool
 		 {
@@ -142,16 +143,16 @@ public class TxHandler {
 			count =+ 1;
 		}
 			 
-			 
-	}       
-		 Transaction[] TranscValid = new Transaction[Trans.size()];
+	   }	 
+     }       
+		 Transaction[] TranscValid = new Transaction[Trans.size()];  
 		
          
-		return TranscValid;
+		return TranscValid;   // return mutually valid array of the only accepted transactions
 		
 		
 		
 		
-	}
+   }
 
 } 
