@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class TxHandler {
 	private UTXOPool utxoPool;
 	public TxHandler(UTXOPool utxoPool) {
 		this.utxoPool = new UTXOPool(utxoPool);
+		
 		// IMPLEMENT THIS
 	}
 
@@ -25,10 +27,9 @@ public class TxHandler {
 	 */
 
 	public boolean isValidTx(Transaction tx) {
-		double total_input = 0;
-
-		ArrayList<UTXO> temp_unique_utox = new ArrayList<>();
-		int tx_size = tx.numInputs();
+		double total_input = 0; // get the total amount of the input 
+		UTXOPool pool_tx = new UTXOPool(); // we make a pool of tx 
+		int tx_size = tx.numInputs(); // get the sze of the tx 
 
 		for(int i = 0 ; i < tx_size;i ++){ // we are going through the entire input of tx 
 			Transaction.Input holds_input = tx.getInput(i); // get all the tx info
@@ -36,72 +37,58 @@ public class TxHandler {
 			UTXO temp = new UTXO(holds_input.prevTxHash,holds_input.outputIndex); // after that makes a temporary UTXO s
 			Transaction.Output holds_output = utxoPool.getTxOutput(temp); // with the temporary UTXO makes a temporoy that holds the output 
 			//1 
-			if(utxoPool.contains(temp)==false) // we check with the temp and see if it insde the pool of utxo thats located in system 
+			if(utxoPool.contains(temp)==false){// we check with the temp and see if it insde the pool of utxo thats located in system 
 				return false;
-				RSAKey answer = holds_output.address;
+			}
+			RSAKey answer = holds_output.address; // makes a refrence to the address 
 			
 			
-			if(answer.verifySignature(tx.getRawDataToSign(i), holds_input.signature)== false) return false;
+			if(answer.verifySignature(tx.getRawDataToSign(i), holds_input.signature)== false) {return false;} // verifes if not UTXO is claimed twice
 			//2 
 			
 			//3
-			if(temp_unique_utox.contains(temp)) return false;
-			temp_unique_utox.add(temp);
-			total_input+= holds_output.value;
+			if(pool_tx.contains(temp)) {return false;} // return false if pool_tx contains that certin one 
+			pool_tx.addUTXO(temp, holds_output); // adds it to the UTXO pool 
+			total_input+= holds_output.value; // gets the total 
 
 			
 		}
 		
-		boolean test4 = true;
-		boolean test5 = true;
+		
+		
+		// For each of the conditions, if the condition is false, set boolean to false.
 		
 		// Condition 4: All tx's outputs values must be non-negative.
-		// Create new array lists of inputs and outputs.
-		ArrayList<Transaction.Input> testInputs = tx.getInputs();
-		ArrayList<Transaction.Output> testOutputs = tx.getOutputs();
+		// Create new array list of outputs.
+	
 		
-		// Create two variables that acts as the sum of inputs and outputs.
-		int totalInput = 0;
-		int totalOutput = 0;
+		// Create double variable as a sum of outputs.
+		double total_Output = 0;
 		
-		// If either inputs or outputs are empty, then abort and return false.
-		if (testInputs.isEmpty()==true || testOutputs.isEmpty() == true)
-		{
-			return false;
-		}
 		
 		// Look through the outputs and check to see if each output is non-negative.
 		// If output is not negative, add the output to the sum.
-		for (int i = 0; i < testOutputs.size(); i++)
+		for (int i = 0; i < tx.numOutputs(); i++)
 		{
-			Transaction.Output eachOut = testOutputs.get(i);
-			if (eachOut.value <= 0)
+			Transaction.Output eachOut = tx.getOutput(i);
+			if ( eachOut== null) {return false;}
+			if (eachOut.value < 0)
 			{
-				// If the output is negative, break out of the for loop.
-				test4 = false;
-				break;
+				return false;
 			}
-			totalOutput += eachOut.value;
-		}
-		
-		// Now do the same for inputs, except obtain each input by obtaining the value from
-		// each previous hash.
-		for (int j = 0; j < testInputs.size(); j++)
-		{
-			Transaction.Input eachIn = testInputs.get(j);
+			
+				total_Output += eachOut.value;
+			
+			
 		}
 		
 		// Condition 5: The sum of tx's input values must not be less than the sum of tx's output values.
-		if (totalInput < totalOutput)
-		{
-			test5 = false;
-		}
-		
-		// Return true only if all two tests return true.
-		if (test4 == false || test5 == false)
+		if (total_input <  total_Output)
 		{
 			return false;
 		}
+		
+		
 		
 		// IMPLEMENT THIS
 		return true;
@@ -113,8 +100,48 @@ public class TxHandler {
 	 * and updating the current UTXO pool as appropriate.
 	 */
 	public Transaction[] handleTxs(Transaction[] possibleTxs) {
-		// IMPLEMENT THIS
-		return null;
-	}
+		
+		
+		 LinkedList<Transaction> Trans = new LinkedList<Transaction>();
+                int count = 0;
+	for (Transaction Transc : possibleTxs)
+			 
+     {
+	if(isValidTx(Transc))              //goes in if statmenet , if transaction is correct
+	   {
+		    Trans.add(Transc);               // add to the linkedlist
+		    
+		 for(Transaction.Input Input : Transc.getInputs())           //  the loop is to remove the UTXO from the pool
+		 {
+			 
+		    UTXO Utxo =new UTXO(Input.prevTxHash,Input.outputIndex);
+		       utxoPool.removeUTXO(Utxo);    // calls removeUTXO from UTXOPool file
+
+		 }
+		 
+		for(Transaction.Output Output : Transc.getOutputs())      // the loop  is to add new UTXO to the pool
+		{	
+		     byte[]Txhash = Transc.getHash();
+		     
+			UTXO Utxo = new UTXO(Txhash,count);
+			utxoPool.addUTXO(Utxo,Output);           // calls addUTXO from UTXOPool file
+			
+			count =+ 1;
+		}
+			 
+	   }
+	else{
+	       continue;
+	    }
+     }       
+		 Transaction[] TranscValid = new Transaction[Trans.size()];  
+		
+         
+		return TranscValid;   // return mutually valid array of the only accepted transactions
+		
+		
+		
+		
+   }
 
 } 
