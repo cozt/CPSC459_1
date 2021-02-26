@@ -62,23 +62,11 @@ public class TxHandler {
 		
 		// Condition 4: All tx's outputs values must be non-negative.
 		// Create new array list of outputs.
-<<<<<<< HEAD
 	
-=======
-		ArrayList<Transaction.Output> testOutputs = tx.getOutputs();
->>>>>>> 5b29cfabd9d948aa7e98ad89b409f98dad7cacc4
 		
 		// Create double variable as a sum of outputs.
 		double total_Output = 0;
 		
-<<<<<<< HEAD
-=======
-		// If outputs are empty, then abort and return false.
-		if (testOutputs.isEmpty() == true)
-		{
-			return false;
-		}
->>>>>>> 5b29cfabd9d948aa7e98ad89b409f98dad7cacc4
 		
 		// Look through the outputs and check to see if each output is non-negative.
 		// If output is not negative, add the output to the sum.
@@ -88,7 +76,6 @@ public class TxHandler {
 			if ( eachOut== null) {return false;}
 			if (eachOut.value < 0)
 			{
-<<<<<<< HEAD
 				return false;
 			}
 			
@@ -99,30 +86,6 @@ public class TxHandler {
 		
 		// Condition 5: The sum of tx's input values must not be less than the sum of tx's output values.
 		if (total_input <  total_Output)
-=======
-				test4 = false;
-			}
-			else
-			{
-				total_Output += eachOut.value;
-			}
-			
-			if (test4 == false)
-			{
-				// If the output is negative, break out of the for loop.
-				break;
-			}
-		}
-		
-		// Condition 5: The sum of tx's input values must not be less than the sum of tx's output values.
-		if (total_input < total_Output)
-		{
-			test5 = false;
-		}
-		
-		// Return true only if all two tests return true.
-		if (test4 == false || test5 == false)
->>>>>>> 5b29cfabd9d948aa7e98ad89b409f98dad7cacc4
 		{
 			return false;
 		}
