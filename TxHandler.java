@@ -121,14 +121,15 @@ public class TxHandler {
 
 		 }
 		 
-		for(Transaction.Output Output : Transc.getOutputs())      // the loop  is to add new UTXO to the pool
+		 byte[]Txhash = Transc.getHash();
+		for(int i = 0 ; i<  Transc.numOutputs();++i)      // the loop  is to add new UTXO to the pool
 		{	
-		     byte[]Txhash = Transc.getHash();
 		     
-			UTXO Utxo = new UTXO(Txhash,count);
-			utxoPool.addUTXO(Utxo,Output);           // calls addUTXO from UTXOPool file
+		     
+			UTXO Utxo = new UTXO(Txhash,i);
+			utxoPool.addUTXO(Utxo,Transc.getOutput(i));           // calls addUTXO from UTXOPool file
 			
-			count =+ 1;
+			//count =+ 1;
 		}
 			 
 	   }
