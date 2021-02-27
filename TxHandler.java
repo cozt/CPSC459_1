@@ -105,7 +105,7 @@ public class TxHandler {
 		
 		
 		 LinkedList<Transaction> Trans = new LinkedList<Transaction>();
-                int count = 0;
+                
 	for (Transaction Transc : possibleTxs)
 			 
      {
