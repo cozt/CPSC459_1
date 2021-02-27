@@ -138,7 +138,7 @@ public class TxHandler {
      }       
 		 Transaction[] TranscValid = new Transaction[Trans.size()];  
 		
-         
+                Trans.toArray(TranscValid);  // Organizes the transactions before returning 
 		return TranscValid;   // return mutually valid array of the only accepted transactions
 		
 		
