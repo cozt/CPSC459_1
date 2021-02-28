@@ -1,2 +1,7 @@
 # CPSC 459 Section 1
-## Members: Danny Tzoc, Josiah Peedikayil, John Tu, Luis Camacho
+## Danny Tzoc
+## John Tu 889857462 jttc98@csu.fullerton.edu
+## Josiah Peedikayil
+## Luis Camacho
+
+Extra Credit attempted? Yes
