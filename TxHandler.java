@@ -54,12 +54,6 @@ public class TxHandler {
 			
 		}
 		
-		
-		
-		// For each of the conditions, if the condition is false, set boolean to false.
-		
-		// For each of the conditions, if the condition is false, set boolean to false.
-		
 		// Condition 4: All tx's outputs values must be non-negative.
 		// Create new array list of outputs.
 	
